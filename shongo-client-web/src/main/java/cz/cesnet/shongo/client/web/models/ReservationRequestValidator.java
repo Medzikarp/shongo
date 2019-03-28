@@ -269,7 +269,7 @@ public class ReservationRequestValidator implements Validator
                 }
             }
 
-            availabilityCheckRequest.setSpecification(reservationRequestModel.toSpecificationApi());
+            availabilityCheckRequest.setSpecification(reservationRequestModel.toSpecificationApi(reservationRequestModel.specificationType));
             switch (specificationType) {
                 case PERMANENT_ROOM_CAPACITY:
                     String permanentRoomId = reservationRequestModel.getPermanentRoomReservationRequestId();
