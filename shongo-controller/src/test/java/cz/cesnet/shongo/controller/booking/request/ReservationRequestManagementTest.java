@@ -22,6 +22,7 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -642,8 +643,7 @@ public class ReservationRequestManagementTest extends AbstractControllerTest
         reservationRequest2.setReusedReservationRequestId(reservationRequest1Id);
         String reservationRequest2Id = service.createReservationRequest(SECURITY_TOKEN_USER1, reservationRequest2);
 
-        getAuthorizationService().createAclEntry(SECURITY_TOKEN_USER1, new AclEntry(user2Id, reservationRequest1Id,
-                ObjectRole.READER));
+        getAuthorizationService().createAclEntry(SECURITY_TOKEN_USER1, new AclEntry(user2Id, reservationRequest1Id, ObjectRole.READER));
         Assert.assertEquals("For ReservationRequestReusement.ARBITRARY the AclEntries should not be propagated",
                 NONE, listObjectPermissions(SECURITY_TOKEN_USER2, reservationRequest2Id));
 
