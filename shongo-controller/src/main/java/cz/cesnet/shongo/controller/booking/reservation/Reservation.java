@@ -14,7 +14,6 @@ import cz.cesnet.shongo.controller.booking.room.RoomReservation;
 import cz.cesnet.shongo.controller.booking.value.ValueReservation;
 import cz.cesnet.shongo.hibernate.PersistentDateTime;
 import cz.cesnet.shongo.report.ReportableSimple;
-import org.hibernate.annotations.Index;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -27,6 +26,7 @@ import java.util.*;
  * @author Martin Srom <martin.srom@cesnet.cz>
  */
 @Entity
+@Table(indexes = { @Index(name = "user_id_idx", columnList = ("user_id")) })
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Reservation extends PersistentObject implements ReportableSimple
 {
@@ -34,7 +34,6 @@ public class Reservation extends PersistentObject implements ReportableSimple
      * User-id of an user who created the {@link AbstractReservationRequest}
      * based on which this {@link Reservation} was allocated.
      */
-    @Index(name = "user_id_idx")
     private String userId;
 
     /**

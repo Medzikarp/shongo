@@ -1,10 +1,12 @@
 package cz.cesnet.shongo.controller.util;
 
 import cz.cesnet.shongo.TodoImplementException;
+import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.PostgreSQL81Dialect;
-import org.hibernate.ejb.EntityManagerFactoryImpl;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,11 +114,12 @@ public class NativeQuery
         }
 
         // Determine SQL directory
-        if (!(entityManagerFactory instanceof EntityManagerFactoryImpl)) {
+        if (!(entityManagerFactory instanceof SessionFactoryImplementor)) {
             throw new TodoImplementException(entityManagerFactory.getClass());
         }
-        EntityManagerFactoryImpl entityManagerFactoryImpl = (EntityManagerFactoryImpl) entityManagerFactory;
-        Dialect dialect = entityManagerFactoryImpl.getSessionFactory().getDialect();
+
+        SessionFactoryImplementor sessionFactoryImpl = (SessionFactoryImplementor) entityManagerFactory;
+        Dialect dialect = sessionFactoryImpl.getJdbcServices().getDialect();;
         String directory;
         if (dialect instanceof HSQLDialect) {
             directory = "hsqldb";

@@ -1,16 +1,14 @@
 package cz.cesnet.shongo.client.web.auth;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cesnet.shongo.api.UserInformation;
 import cz.cesnet.shongo.client.web.ClientWebConfiguration;
 import cz.cesnet.shongo.controller.api.SecurityToken;
-import cz.cesnet.shongo.controller.api.UserSettings;
-import cz.cesnet.shongo.controller.api.rpc.AuthorizationService;
 import cz.cesnet.shongo.ssl.ConfiguredSSLContext;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -84,8 +82,8 @@ public class OpenIDConnectAuthenticationProvider implements AuthenticationProvid
             }
             // Handle error
             if (userInfoResponse.has("error")) {
-                String error = userInfoResponse.get("error").getTextValue();
-                String description = userInfoResponse.get("error_description").getTextValue();
+                String error = userInfoResponse.get("error").asText();
+                String description = userInfoResponse.get("error_description").asText();
                 throw new AuthenticationServiceException(
                         "Unable to obtain user information. " + error + ": " + description);
             }
@@ -97,16 +95,16 @@ public class OpenIDConnectAuthenticationProvider implements AuthenticationProvid
             // Build user info
             UserInformation userInformation = new UserInformation();
             userInformation.setUserId(userInfoResponse.get("id").asText());
-            userInformation.setFirstName(userInfoResponse.get("first_name").getTextValue());
-            userInformation.setLastName(userInfoResponse.get("last_name").getTextValue());
+            userInformation.setFirstName(userInfoResponse.get("first_name").asText());
+            userInformation.setLastName(userInfoResponse.get("last_name").asText());
             if (userInfoResponse.has("original_id")) {
                 // TODO: set current principal name
             }
             if (userInfoResponse.has("organization")) {
-                userInformation.setOrganization(userInfoResponse.get("organization").getTextValue());
+                userInformation.setOrganization(userInfoResponse.get("organization").asText());
             }
             if (userInfoResponse.has("mail")) {
-                userInformation.setEmail(userInfoResponse.get("mail").getTextValue());
+                userInformation.setEmail(userInfoResponse.get("mail").asText());
             }
             securityToken.setUserInformation(userInformation);
 

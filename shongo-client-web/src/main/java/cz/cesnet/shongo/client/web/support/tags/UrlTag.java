@@ -61,15 +61,10 @@ public class UrlTag extends org.springframework.web.servlet.tags.UrlTag
                     }
                 }
                 else {
-                    try {
-                        qs.append(UriUtils.encodeQueryParam(param.getName(), encoding));
-                        if (param.getValue() != null) {
-                            qs.append("=");
-                            qs.append(UriUtils.encodeQueryParam(param.getValue(), encoding));
-                        }
-                    }
-                    catch (UnsupportedEncodingException ex) {
-                        throw new JspException(ex);
+                    qs.append(UriUtils.encodeQueryParam(param.getName(), encoding));
+                    if (param.getValue() != null) {
+                        qs.append("=");
+                        qs.append(UriUtils.encodeQueryParam(param.getValue(), encoding));
                     }
                 }
             }
@@ -94,13 +89,7 @@ public class UrlTag extends org.springframework.web.servlet.tags.UrlTag
                         value = param.getValue();
                     }
                     else {
-                        try {
-                            value = UriUtils.encodePath(param.getValue(), encoding);
-
-                        }
-                        catch (UnsupportedEncodingException ex) {
-                            throw new JspException(ex);
-                        }
+                        value = UriUtils.encodePath(param.getValue(), encoding);
                     }
                     uri = uri.substring(0, startIndex) + value + uri.substring(endIndex + 1);
                 }

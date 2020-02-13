@@ -224,6 +224,7 @@ public class AuthorizationManager extends AclEntryManager
         }
 
         try {
+
             aclEntry = super.createEntry(identity, objectIdentity, objectRole.toString());
 
             activeTransaction.addAclEntry(aclEntry);
